@@ -9,7 +9,7 @@ function respond() {
       botRegex = /^\/cool guy$/;
 
   if (request.name != "UndeadShakespeare") {
-    if(request.text && (Math.floor((Math.random() * 10) + 1) <= 5)){ // && botRegex.test(request.text)) {
+    if(request.text && (Math.floor((Math.random() * 10) + 1) == 15)){ // && botRegex.test(request.text)) {
       this.res.writeHead(200);
       postMessage(request.name);
       this.res.end();
