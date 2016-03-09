@@ -16,15 +16,14 @@ function respond() {
   }
 
   if (request.name.substring(0,6) != "Undead" && botRegex.test(request.text)) {
-    if(request.name =="GGG" && ){ // && botRegex.test(request.text)) {
-      this.res.writeHead(200);
-      postMessage(requst.entries);
-      this.res.end();
-    } else {
-      console.log("don't care");
-      this.res.writeHead(200);
-      this.res.end();
-    }
+    // && botRegex.test(request.text)) {
+    this.res.writeHead(200);
+    postMessage(requst.entries);
+    this.res.end();
+  } else {
+    console.log("don't care");
+    this.res.writeHead(200);
+    this.res.end();
   }
 }
 
