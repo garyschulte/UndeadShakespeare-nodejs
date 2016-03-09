@@ -1,5 +1,6 @@
 var HTTPS = require('https');
 var cool = require('cool-ascii-faces');
+var insult = require('shakespear-insult').random();
 
 var botID = process.env.BOT_ID;
 
@@ -31,7 +32,7 @@ function postMessage(who) {
 
   body = {
     "bot_id" : botID,
-    "text" : "GFY " + who
+    "text" : who + ", " + insult
   };
 
   console.log('sending ' + botResponse + ' to ' + botID);
