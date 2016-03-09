@@ -8,14 +8,16 @@ function respond() {
   var request = JSON.parse(this.req.chunks[0]),
       botRegex = /^\/cool guy$/;
 
-  if(request.text && request.name != "GFYbot" && (Math.floor((Math.random() * 10) + 1) == 4)){ // && botRegex.test(request.text)) {
-    this.res.writeHead(200);
-    postMessage(request.name);
-    this.res.end();
-  } else {
-    console.log("don't care");
-    this.res.writeHead(200);
-    this.res.end();
+  if (request.name != "UndeadShakespeare") {
+    if(request.text && (Math.floor((Math.random() * 10) + 1) == 4)){ // && botRegex.test(request.text)) {
+      this.res.writeHead(200);
+      postMessage(request.name);
+      this.res.end();
+    } else {
+      console.log("don't care");
+      this.res.writeHead(200);
+      this.res.end();
+    }
   }
 }
 
