@@ -1,6 +1,6 @@
 var HTTPS = require('https');
 var cool = require('cool-ascii-faces');
-var insult = require('shakespear-insult').random();
+var insult = require('shakespeare-insult').random();
 
 var botID = process.env.BOT_ID;
 
