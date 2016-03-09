@@ -7,9 +7,9 @@ function respond() {
   var request = JSON.parse(this.req.chunks[0]),
       botRegex = /^\/cool guy$/;
 
-  if(request.text && botRegex.test(request.text)) {
+  if(request.text){ // && botRegex.test(request.text)) {
     this.res.writeHead(200);
-    postMessage(request);
+    postMessage(request.name);
     this.res.end();
   } else {
     console.log("don't care");
@@ -18,7 +18,7 @@ function respond() {
   }
 }
 
-function postMessage(request) {
+function postMessage(who) {
   var botResponse, options, body, botReq;
 
   botResponse = cool();
@@ -31,7 +31,7 @@ function postMessage(request) {
 
   body = {
     "bot_id" : botID,
-    "text" : request
+    "text" : "GFY " + who
   };
 
   console.log('sending ' + botResponse + ' to ' + botID);
