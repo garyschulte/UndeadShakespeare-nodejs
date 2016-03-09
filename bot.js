@@ -18,7 +18,7 @@ function respond() {
   if (request.name.substring(0,6) != "Undead" && botRegex.test(request.text)) {
     // && botRegex.test(request.text)) {
     this.res.writeHead(200);
-    postMessage(requst.entries);
+    postMessage(request.entries);
     this.res.end();
   } else {
     console.log("don't care");
