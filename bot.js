@@ -32,7 +32,7 @@ function postMessage(who) {
 
   body = {
     "bot_id" : botID,
-    "text" : who + ", " + insult.random()
+    "text" : who + " is a(n) " + insult.random()
   };
 
   console.log('sending ' + botResponse + ' to ' + botID);
