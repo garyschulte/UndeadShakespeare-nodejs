@@ -1,3 +1,17 @@
+/*
+"{\"attachments\":[],
+\"avatar_url\":\"https://i.groupme.com/30757760d52f0130eea0526da9964391\",
+\"created_at\":1457572369,
+\"group_id\":\"20116625\",
+\"id\":\"145757236932018952\",
+\"name\":\"gary schulte\",
+\"sender_id\":\"12403795\",
+\"sender_type\":\"user\",
+\"source_guid\":\"63c117a4677ffc743c52e6831cf6c7e1\",
+\"system\":false,
+\"text\":\"/undead\",
+\"user_id\":\"12403795\"}"
+*/
 var HTTPS = require('https');
 var cool = require('cool-ascii-faces');
 var insult = require('shakespeare-insult');
@@ -15,7 +29,7 @@ function respond() {
     botId = process.env.BOT_ID;
   }
 
-  if (request.name.substring(0,6) != "Undead" && botRegex.test(request.text)) {
+  if ((request.name.substring(0,6) != "Undead" && botRegex.test(request.text)) || request.group_id='20116625') {
     // && botRegex.test(request.text)) {
     this.res.writeHead(200);
     postMessage(JSON.stringify(this.req.chunks[0]));
