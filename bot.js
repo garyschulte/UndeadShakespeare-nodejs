@@ -16,7 +16,7 @@ var HTTPS = require('https');
 var cool = require('cool-ascii-faces');
 var insult = require('shakespeare-insult');
 
-var botID = process.env.BOT_ID;
+var botID = '20290776a96657c2adb3a17d46';//process.env.BOT_ID;
 
 function respond() {
   var request = JSON.parse(this.req.chunks[0]),
