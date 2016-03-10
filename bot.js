@@ -19,6 +19,13 @@ botRegex = /^\/(undead|us)/i;
 function respond() {
   var request = JSON.parse(this.req.chunks[0]);
 
+  if (request.group_id == "20116625") {
+    // test cutpaste group
+    botID = '20290776a96657c2adb3a17d46';
+  } else {
+      botID = '500aab9df7fec893df306e17e4';
+  }
+
   if (request.name.substring(0,6) != "Undead" && botRegex.test(request.text)) {
     this.res.writeHead(200);
     if (whereRegex.test(request.text)) {
