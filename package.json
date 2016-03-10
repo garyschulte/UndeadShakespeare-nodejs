@@ -11,7 +11,9 @@
     "cool-ascii-faces": "~1.3.x",
     "shakespeare-insult": "~1.0.0",
     "giphy" : "~0.0.4",
-    "sync" : "~0.2.5"
+    "sync" : "~0.2.5",
+    "youtube-node" : "~1.3.0",
+    "node-craigslist" : "~0.1.9"
   },
   "engines": {
     "node": "0.10.x"

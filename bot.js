@@ -2,13 +2,17 @@ var HTTPS = require('https');
 var cool = require('cool-ascii-faces');
 var insult = require('shakespeare-insult');
 var giphy = require('giphy');
+var youtube = require('youtube-node');
+var craigslist = require('node-craigslist');
 var Sync = require('sync');
 
 var botID = process.env.BOT_ID;
 
 var botRegex = /^\/(undead|us)/i,
     whereRegex = /^.*where (.*)/i,
-    giphyRegex = /^.*giphy (.*)/i;
+    giphyRegex = /^.*giphy (.*)/i,
+    videoRegex = /^.*video(.*)/i,
+    craigslistRegex = /^.*(craigslist|cl) (.*)/i;
 
 botRegex = /^\/(undead|us)/i;
 
@@ -26,6 +30,10 @@ function respond() {
         getWhere(request);
     } else if (giphyRegex.test(request.text)) {
         getGiphy(request);
+    } else if (videoRegex.test(request.text)) {
+        getVideo(request);
+    } else if (craigslistRegex.test(request.text)) {
+        getCraigslist(request);
     } else {
         postMessage("You talkin' to me?");
     }
@@ -88,11 +96,46 @@ function getGiphy(request){
     var searchText = request.text.replace(giphyRegex, "$1");
     console.log("searching for " + searchText);
        Sync(function() {
-           gif = new giphy('dc6zaTOxFJmzC').search.sync(null, {q : searchText, limit : 1});
-           console.log(gif)
-           //console.log(gif.data[0]);
-           postImage(gif.data[0].images.original.url);
+           gif = new giphy('dc6zaTOxFJmzC').search.sync(null, {q : searchText, limit : 25});
+           if (gif.data.length>0) {
+               idx = Math.floor(gif.data.length * Math.random());
+               console.log("giphy idx: " + idx);
+               postImage(gif.data[idx].images.original.url);
+           }
        })
+}
+
+function getVideo(request) {
+    var searchText = request.text.replace(videoRegex, "$1");
+    console.log("searching for " + searchText);
+    Sync(function() {
+        try {
+            yt = new youtube();
+            yt.setKey('AIzaSyBmp-11QshRogyx4RZCwceRoTwLB4TBaf8');
+            tubes = yt.search.sync(null, searchText, 10);
+            idx = Math.floor(tubes.items.length * Math.random());
+            console.log("youtube idx: " + idx);
+            //console.log("tubes: " + JSON.stringify(tubes));
+            postMessage("http://www.youtube.com/watch?v="+tubes.items[idx].id.videoId)
+        }catch(e){
+            console.error(e);
+        }
+    })
+}
+
+function getCraigslist(request) {
+    var searchText = request.text.replace(craigslistRegex, "$2");
+    cl = craigslist({city : 'portland'});
+    console.log("searching for " + searchText);
+    Sync(function() {
+        ads = cl.search.sync(null, searchText);
+        console.log("ads: " + JSON.stringify(ads[0]));
+        resp = "";
+        for(i=0 ; i <= ads.length && i < 10; i++){
+            resp += ads[i].url + "\n" + ads[i].title + "\n";
+        }
+        postMessage(resp);
+    })
 }
 
 exports.respond = respond;
