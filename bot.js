@@ -1,40 +1,36 @@
-/*
-"{\"attachments\":[],
-\"avatar_url\":\"https://i.groupme.com/30757760d52f0130eea0526da9964391\",
-\"created_at\":1457572369,
-\"group_id\":\"20116625\",
-\"id\":\"145757236932018952\",
-\"name\":\"gary schulte\",
-\"sender_id\":\"12403795\",
-\"sender_type\":\"user\",
-\"source_guid\":\"63c117a4677ffc743c52e6831cf6c7e1\",
-\"system\":false,
-\"text\":\"/undead\",
-\"user_id\":\"12403795\"}"
-*/
 var HTTPS = require('https');
 var cool = require('cool-ascii-faces');
 var insult = require('shakespeare-insult');
+var giphy = require('giphy');
+var Sync = require('sync');
 
-var botID = '20290776a96657c2adb3a17d46';//process.env.BOT_ID;
+var botID = process.env.BOT_ID;
+
+var botRegex = /^\/(undead|us)/i,
+    whereRegex = /^.*where (.*)/i,
+    giphyRegex = /^.*giphy (.*)/i;
+
+botRegex = /^\/(undead|us)/i;
 
 function respond() {
-  var request = JSON.parse(this.req.chunks[0]),
-      botRegex = /^\/(undead|us)/i;
+  var request = JSON.parse(this.req.chunks[0]);
 
   if (request.group_id == "20116625") {
     // test cutpaste group
-    botId = '20290776a96657c2adb3a17d46';
-  } else {
-    botId = process.env.BOT_ID;
+    botID = '20290776a96657c2adb3a17d46';
   }
 
-  if (request.group_id=="20116625" && request.name.substring(0,6) != "Undead") {
-    //(request.name.substring(0,6) != "Undead" && botRegex.test(request.text)) || request.group_id='20116625'
-    // && botRegex.test(request.text)) {
+  if (request.name.substring(0,6) != "Undead" && botRegex.test(request.text)) {
     this.res.writeHead(200);
-    postMessage(this.req.toSource());
+    if (whereRegex.test(request.text)) {
+        getWhere(request);
+    } else if (giphyRegex.test(request.text)) {
+        getGiphy(request);
+    } else {
+        postMessage("You talkin' to me?");
+    }
     this.res.end();
+
   } else {
     console.log("don't care");
     this.res.writeHead(200);
@@ -42,10 +38,22 @@ function respond() {
   }
 }
 
-function postMessage(msg) {
-  var botResponse, options, body, botReq;
+function postMessage(msg){
+    post({
+        "bot_id" : botID,
+        "text" : msg
+    });
+}
 
-  botResponse = cool();
+function postImage(img){
+  post({
+      "bot_id" : botID,
+      "attachments" : [{"type" : "image", "url" : img}]
+  });
+}
+
+function post(body) {
+  var botResponse, options, body, botReq;
 
   options = {
     hostname: 'api.groupme.com',
@@ -53,12 +61,7 @@ function postMessage(msg) {
     method: 'POST'
   };
 
-  body = {
-    "bot_id" : botID,
-    "text" : msg
-  };
-
-  console.log('sending ' + botResponse + ' to ' + botID);
+  console.log('sending ' + body + ' to ' + botID);
 
   botReq = HTTPS.request(options, function(res) {
       if(res.statusCode == 202) {
@@ -77,5 +80,19 @@ function postMessage(msg) {
   botReq.end(JSON.stringify(body));
 }
 
+function getWhere(request){
+
+}
+
+function getGiphy(request){
+    var searchText = request.text.replace(giphyRegex, "$1");
+    console.log("searching for " + searchText);
+       Sync(function() {
+           gif = new giphy('dc6zaTOxFJmzC').search.sync(null, {q : searchText, limit : 1});
+           console.log(gif)
+           //console.log(gif.data[0]);
+           postImage(gif.data[0].images.original.url);
+       })
+}
 
 exports.respond = respond;
