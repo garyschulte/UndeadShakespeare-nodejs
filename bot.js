@@ -29,7 +29,7 @@ function respond() {
     botId = process.env.BOT_ID;
   }
 
-  if (true) {
+  if (request.group_id=="20116625") {
     //(request.name.substring(0,6) != "Undead" && botRegex.test(request.text)) || request.group_id='20116625'
     // && botRegex.test(request.text)) {
     this.res.writeHead(200);
