@@ -133,7 +133,7 @@ function getCraigslist(request) {
         ads = cl.search.sync(null, searchText);
         console.log("ads: " + JSON.stringify(ads[0]));
         resp = "";
-        for(i=0 ; i <= ads.length && i < 10; i++){
+        for(i=0 ; i <= ads.length && i < 5; i++){
             resp += ads[i].url + "\n" + ads[i].title + "\n";
         }
         postMessage(resp);
