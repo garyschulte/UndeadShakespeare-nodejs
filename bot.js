@@ -33,7 +33,7 @@ function respond() {
     //(request.name.substring(0,6) != "Undead" && botRegex.test(request.text)) || request.group_id='20116625'
     // && botRegex.test(request.text)) {
     this.res.writeHead(200);
-    postMessage(JSON.stringify(this.req));
+    postMessage(JSON.stringify(this.req.chunks[0]));
     this.res.end();
   } else {
     console.log("don't care");
